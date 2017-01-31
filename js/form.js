@@ -1,12 +1,12 @@
 'use strict';
 
-var pinObject = document.querySelectorAll('.pin');
+var pinNodes = document.querySelectorAll('.pin');
 var closeDialog = document.querySelector('.dialog__close');
 var dialogWindow = document.querySelector('.dialog');
 
 // Добавление и удаление класса у меток
-for (var i = 0; i < pinObject.length; i++) {
-  pinObject[i].addEventListener('click', function (event) {
+for (var i = 0; i < pinNodes.length; i++) {
+  pinNodes[i].addEventListener('click', function (event) {
     removeClassPinActive();
     var target = event.currentTarget;
     target.classList.add('pin--active');
@@ -22,35 +22,56 @@ closeDialog.addEventListener('click', function () {
 
 // функция удаления активного класса у обьектов с классом pin
 var removeClassPinActive = function () {
-  for (var j = 0; j < pinObject.length; j++) {
-    pinObject[j].classList.remove('pin--active');
+  for (var j = 0; j < pinNodes.length; j++) {
+    pinNodes[j].classList.remove('pin--active');
   }
 };
 
-// Изменения значений в полях формы
-// Синхронизация по времени
-var timeOption = document.querySelector('#time');
-var timeoutOption = document.querySelector('#timeout');
+// Валидация форм
 
-timeOption.addEventListener('click', function () {
-  timeoutOption.value = timeOption.value;
+var noticeFormNode = document.querySelector('.notice__form');
+var noticeFormTitle = noticeFormNode.querySelector('#title');
+var noticeFormPrice = noticeFormNode.querySelector('#price');
+var noticeFormAddress = noticeFormNode.querySelector('#address');
+
+noticeFormTitle.required = true;
+noticeFormTitle.minLength = 30;
+noticeFormTitle.maxLength = 100;
+
+noticeFormPrice.required = true;
+noticeFormPrice.type = 'number';
+noticeFormPrice.min = 1000;
+noticeFormPrice.max = 1000000;
+
+noticeFormAddress.required = true;
+
+// Изменения значений в полях формы - синхронизация
+// Синхронизация по времени
+var timeSelect = document.querySelector('#time');
+var timeoutSelect = document.querySelector('#timeout');
+
+timeoutSelect.value = timeSelect.value;
+timeSelect.addEventListener('change', function () {
+  timeoutSelect.value = timeSelect.value;
 });
 
-timeoutOption.addEventListener('click', function () {
-  timeOption.value = timeoutOption.value;
+timeoutSelect.addEventListener('change', function () {
+  timeSelect.value = timeoutSelect.value;
 });
 
 // Тип жилья и синхронизация с минимальной ценной
 var housingType = document.querySelector('#type');
-var priceInput = document.querySelector('#price');
 
-housingType.addEventListener('change', function () {
+housingType.addEventListener('change', function (event) {
   if (housingType.value === 'flat') {
-    priceInput.value = 1000;
+    noticeFormPrice.value = 1000;
+    noticeFormPrice.min = 1000;
   } else if (housingType.value === 'shack') {
-    priceInput.value = 0;
+    noticeFormPrice.value = 0;
+    noticeFormPrice.min = 0;
   } else {
-    priceInput.value = 1000000;
+    noticeFormPrice.value = 1000000;
+    noticeFormPrice.min = 10000;
   }
 });
 
@@ -58,8 +79,10 @@ housingType.addEventListener('change', function () {
 var countRoom = document.querySelector('#room_number');
 var capacityGuest = document.querySelector('#capacity');
 
-countRoom.addEventListener('change', function () {
-  var oneRoom = countRoom.value === '1room';
+capacityGuest.value = 'noguest';
+countRoom.addEventListener('change', function (event) {
+  var oneRoom = event.target.value === '1room';
+  event.preventDefault();
   if (oneRoom) {
     capacityGuest.value = 'noguest';
   } else {
