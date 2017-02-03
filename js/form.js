@@ -3,16 +3,57 @@
 var pinNodes = document.querySelectorAll('.pin');
 var closeDialog = document.querySelector('.dialog__close');
 var dialogWindow = document.querySelector('.dialog');
+var tokyoPinMap = document.querySelector('.tokyo__pin-map');
+var CODE_ENTER_KEY = 13;
+var ClickedElement = null;
+
+// Обработчик события по клику
+var clickHandler = function (event) {
+  console.log(event);
+  if (ClickedElement){
+    ClickedElement.classList.remove('pin--active');
+    ClickedElement = event.currentTarget;
+    ClickedElement.classList.add('pin--active');
+    dialogWindow.style.display = 'block';
+  }
+}
+
+for (var i = 0; i<pinNodes.length; i++){
+  pinNodes[i].addEventListener('click', clickHandler, true);
+}
+
+// Обработчик события по клавиатуре
+var keydownHandler = function (event) {
+  if (event.keyCode === CODE_ENTER_KEY){
+      console.log(event);
+      removeClassPinActive();
+      ClickedElement = event.currentTarget;
+      ClickedElement.classList.add('pin--active');
+      dialogWindow.style.display = 'block';
+  }
+}
+
+for (var i = 0; i<pinNodes.length; i++){
+  pinNodes[i].addEventListener('keydown', keydownHandler, true)
+}
 
 // Добавление и удаление класса у меток
-for (var i = 0; i < pinNodes.length; i++) {
+/*for (var i = 0; i < pinNodes.length; i++) {
   pinNodes[i].addEventListener('click', function (event) {
     removeClassPinActive();
     var target = event.currentTarget;
     target.classList.add('pin--active');
     dialogWindow.style.display = 'block';
   });
-}
+  pinNodes[i].addEventListener('keydown', function (event) {
+    if (event.keyCode === CODE_ENTER_KEY) {
+      removeClassPinActive();
+      var target = event.currentTarget;
+      target.classList.add('pin--active');
+      dialogWindow.style.display = 'block';
+    }
+  });
+}*/
 
 // Скрытие диалогового окна и удаление класса у метки
 closeDialog.addEventListener('click', function () {
