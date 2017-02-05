@@ -5,21 +5,17 @@ var closeDialog = document.querySelector('.dialog__close');
 var dialogWindow = document.querySelector('.dialog');
 var tokyoPinMap = document.querySelector('.tokyo__pin-map');
 var CODE_ENTER_KEY = 13;
-var clickedElement = null;
+var clickedElement;
 
 
 // Обработчик события по клику
 var clickHandler = function (event) {
   removeClassPinActive();
-    /* На сколько правильно использовать готовую функцию в обработчике,
-     учитывая, что эта функция проходит по всем еэлементам .pin */
   clickedElement = event.target;
-    /* Тут использовал parentNode, т.к. При клике на картинку
-    класс вешался на ней */
-  clickedElement.parentNode.classList.add('pin--active');
+  clickedElement.parentNode.classList.add('pin--active'); // Тут использовал parentNode, т.к. При клике на картинку класс вешался на ней
+  clickedElement.parentNode.setAttribute('aria-pressed', 'true');
   dialogWindow.style.display = 'block';
 };
-
 tokyoPinMap.addEventListener('click', clickHandler, true);
 
 // Обработчик события по клавиатуре
@@ -28,10 +24,10 @@ var keydownHandler = function (event) {
     removeClassPinActive();
     clickedElement = event.target;
     clickedElement.classList.add('pin--active');
+    clickedElement.setAttribute('aria-pressed', 'true');
     dialogWindow.style.display = 'block';
   }
 };
-
 tokyoPinMap.addEventListener('keydown', keydownHandler, true);
 
 // Скрытие диалогового окна и удаление класса у метки
@@ -44,11 +40,23 @@ closeDialog.addEventListener('click', function () {
 var removeClassPinActive = function () {
   for (var j = 0; j < pinNodes.length; j++) {
     pinNodes[j].classList.remove('pin--active');
+    pinNodes[j].setAttribute('aria-pressed', 'false');
   }
 };
 
-// Валидация форм
+// Назначение атрибутов элементам на карте
+for (var i = 0; i < pinNodes.length; i++) {
+  var element = pinNodes[i];
+  element.setAttribute('role', 'button');
+  element.setAttribute('tabindex', '1');
+  if (element.classList.contains('pin--active')) {
+    element.setAttribute('aria-pressed', 'true');
+  } else {
+    element.setAttribute('aria-pressed', 'false');
+  }
+}
 
+// Валидация форм
 var noticeFormNode = document.querySelector('.notice__form');
 var noticeFormTitle = noticeFormNode.querySelector('#title');
 var noticeFormPrice = noticeFormNode.querySelector('#price');
