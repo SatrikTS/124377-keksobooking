@@ -5,15 +5,18 @@ var closeDialog = document.querySelector('.dialog__close');
 var dialogWindow = document.querySelector('.dialog');
 var tokyoPinMap = document.querySelector('.tokyo__pin-map');
 var CODE_ENTER_KEY = 13;
-var clickedElement;
-
 
 // Обработчик события по клику
 var clickHandler = function (event) {
   removeClassPinActive();
-  clickedElement = event.target;
-  clickedElement.parentNode.classList.add('pin--active'); // Тут использовал parentNode, т.к. При клике на картинку класс вешался на ней
-  clickedElement.parentNode.setAttribute('aria-pressed', 'true');
+  var clickedElement;
+  if (event.target.classList.contains('pin')) {
+    clickedElement = event.target;
+  } else if (!event.target.classList.contains('pin')) {
+    clickedElement = event.target.parentNode;
+  }
+  clickedElement.classList.add('pin--active');
+  clickedElement.setAttribute('aria-pressed', 'true');
   dialogWindow.style.display = 'block';
 };
 tokyoPinMap.addEventListener('click', clickHandler, true);
@@ -22,7 +25,7 @@ tokyoPinMap.addEventListener('click', clickHandler, true);
 var keydownHandler = function (event) {
   if (event.keyCode === CODE_ENTER_KEY) {
     removeClassPinActive();
-    clickedElement = event.target;
+    var clickedElement = event.target;
     clickedElement.classList.add('pin--active');
     clickedElement.setAttribute('aria-pressed', 'true');
     dialogWindow.style.display = 'block';
