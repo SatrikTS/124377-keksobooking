@@ -26,9 +26,6 @@ var timeArray = ['twelve', 'thirteen', 'fourteen'];
 
 var guestArray = ['3guest', 'noguest'];
 var roomArray = ['1room', '2room', '100room'];
-// Тип жилья и синхронизация с минимальной ценной
-var housingType = document.querySelector('#type');
-
 
 // Синхронизация по количетсву метс для гостей
 var countRoom = document.querySelector('#room_number');
