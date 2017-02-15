@@ -19,47 +19,20 @@ noticeFormAddress.required = true;
 
 // Изменения значений в полях формы - синхронизация
 // Синхронизация по времени
-/*
+
 var timeSelect = document.querySelector('#time');
 var timeoutSelect = document.querySelector('#timeout');
+var timeArray = ['twelve', 'thirteen', 'fourteen'];
 
-timeoutSelect.value = timeSelect.value;
-timeSelect.addEventListener('change', function () {
-  timeoutSelect.value = timeSelect.value;
-});
-
-timeoutSelect.addEventListener('change', function () {
-  timeSelect.value = timeoutSelect.value;
-});
-
+var guestArray = ['3guest', 'noguest'];
+var roomArray = ['1room', '2room', '100room'];
 // Тип жилья и синхронизация с минимальной ценной
 var housingType = document.querySelector('#type');
 
-housingType.addEventListener('change', function (event) {
-  if (housingType.value === 'flat') {
-    noticeFormPrice.value = 1000;
-    noticeFormPrice.min = 1000;
-  } else if (housingType.value === 'shack') {
-    noticeFormPrice.value = 0;
-    noticeFormPrice.min = 0;
-  } else {
-    noticeFormPrice.value = 1000000;
-    noticeFormPrice.min = 10000;
-  }
-});
 
 // Синхронизация по количетсву метс для гостей
 var countRoom = document.querySelector('#room_number');
 var capacityGuest = document.querySelector('#capacity');
 
-capacityGuest.value = 'noguest';
-countRoom.addEventListener('change', function (event) {
-  var oneRoom = event.target.value === '1room';
-  event.preventDefault();
-  if (oneRoom) {
-    capacityGuest.value = 'noguest';
-  } else {
-    capacityGuest.value = '3guest';
-  }
-});
-*/
+window.synchronizeFields(timeSelect, timeoutSelect, timeArray, timeArray, 'value');
+window.synchronizeFields(countRoom, capacityGuest, roomArray, guestArray, 'value');

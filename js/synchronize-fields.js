@@ -15,26 +15,24 @@ synchronize-fields.js — модуль, который экспортирует 
 которые вы поставили для соответствующих записей в полях option в предыдущих заданиях.
 */
 
-window.synchronizeFields = function (firstDOMelement, secondDOMelement, arr1, arr2, value) {
-  secondDOMelement.value = firstDOMelement.value;
-  firstDOMelement.addEventListener('change', function (event) {
-    secondDOMelement[value] = arr2[arr1.indexOf(firstDOMelement.value)];
-  });
+
+window.synchronizeFields = function (firstElement, secondElement, firstArr, secondArr, propertyName) {
+  var changeElement = function (eventt) {
+    var target = event.target;
+    var index;
+
+    if (target === firstElement) {
+      index = firstArr.indexOf(target[propertyName]);
+      secondElement[propertyName] = secondArr[index];
+    } else {
+      index = secondArr.indexOf(target.value);
+      firstElement[propertyName] = firstArr[index];
+    }
+  };
+
+  firstElement.addEventListener('change', changeElement);
+  secondElement.addEventListener('change', changeElement);
 };
-
-var guestArray = ['3guest', 'noguest'];
-var roomArray = ['1room', '2room', '100room'];
-var timeArray = ['twelve', 'thirteen', 'fourteen'];
-
-var timeSelect = document.querySelector('#time');
-var timeoutSelect = document.querySelector('#timeout');
-window.synchronizeFields(timeoutSelect, timeSelect, timeArray, timeArray, 'value');
-window.synchronizeFields(timeSelect, timeoutSelect, timeArray, timeArray, 'value');
-
-var countRoom = document.querySelector('#room_number');
-var capacityGuest = document.querySelector('#capacity');
-window.synchronizeFields(countRoom, capacityGuest, guestArray, roomArray, 'value');
-window.synchronizeFields(capacityGuest, countRoom, guestArray, roomArray, 'value');
 
 /*
 // Синхронизация по количетсву метс для гостей
