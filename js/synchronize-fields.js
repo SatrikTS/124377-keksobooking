@@ -3,14 +3,14 @@
 window.synchronizeFields = function (firstElement, secondElement, firstArr, secondArr, propertyName) {
   var changeElement = function (event) {
     var target = event.target;
-    var index;
+    var indexSelectValue;
 
     if (target === firstElement) {
-      index = firstArr.indexOf(target[propertyName]);
-      secondElement[propertyName] = secondArr[index];
+      indexSelectValue = firstArr.indexOf(firstElement.value);
+      secondElement[propertyName] = secondArr[indexSelectValue];
     } else {
-      index = secondArr.indexOf(target.value);
-      firstElement[propertyName] = firstArr[index];
+      indexSelectValue = secondArr.indexOf(target[propertyName]);
+      firstElement[propertyName] = firstArr[indexSelectValue];
     }
   };
 

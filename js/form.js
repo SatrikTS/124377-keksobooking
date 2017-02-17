@@ -26,15 +26,15 @@ var timeArray = ['twelve', 'thirteen', 'fourteen'];
 // Синхронизация по количетсву метс для гостей
 var countRoom = document.querySelector('#room_number');
 var capacityGuest = document.querySelector('#capacity');
-var guestArray = ['3guest', 'noguest'];
+var guestArray = ['noguest', '3guest', '3guest'];
 var roomCountArray = ['1room', '2room', '100room'];
 
 // Синхронизация по минимальной цене
 var housingType = document.querySelector('#type');
-var priceInput = document.querySelector('#price');
-var roomArray = ['Квартира', 'Лачуга', 'Дворец'];
+var roomArray = ['flat', 'shack', 'palace'];
 var minPrice = ['1000', '0', '10000'];
+
 
 window.synchronizeFields(timeSelect, timeoutSelect, timeArray, timeArray, 'value');
 window.synchronizeFields(countRoom, capacityGuest, roomCountArray, guestArray, 'value');
-window.synchronizeFields(housingType, priceInput, roomArray, minPrice, 'min');
+window.synchronizeFields(housingType, noticeFormPrice, roomArray, minPrice, 'min');
