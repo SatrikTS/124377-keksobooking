@@ -1,64 +1,5 @@
 'use strict';
 
-var pinNodes = document.querySelectorAll('.pin');
-var closeDialog = document.querySelector('.dialog__close');
-var dialogWindow = document.querySelector('.dialog');
-var tokyoPinMap = document.querySelector('.tokyo__pin-map');
-var CODE_ENTER_KEY = 13;
-
-// Обработчик события по клику
-var clickHandler = function (event) {
-  removeClassPinActive();
-  var clickedElement;
-  if (event.target.classList.contains('pin')) {
-    clickedElement = event.target;
-  } else if (!event.target.classList.contains('pin')) {
-    clickedElement = event.target.parentNode;
-  }
-  clickedElement.classList.add('pin--active');
-  clickedElement.setAttribute('aria-pressed', 'true');
-  dialogWindow.style.display = 'block';
-};
-tokyoPinMap.addEventListener('click', clickHandler, true);
-
-// Обработчик события по клавиатуре
-var keydownHandler = function (event) {
-  if (event.keyCode === CODE_ENTER_KEY) {
-    removeClassPinActive();
-    var clickedElement = event.target;
-    clickedElement.classList.add('pin--active');
-    clickedElement.setAttribute('aria-pressed', 'true');
-    dialogWindow.style.display = 'block';
-  }
-};
-tokyoPinMap.addEventListener('keydown', keydownHandler, true);
-
-// Скрытие диалогового окна и удаление класса у метки
-closeDialog.addEventListener('click', function () {
-  dialogWindow.style.display = 'none';
-  removeClassPinActive();
-});
-
-// функция удаления активного класса у обьектов с классом pin
-var removeClassPinActive = function () {
-  for (var j = 0; j < pinNodes.length; j++) {
-    pinNodes[j].classList.remove('pin--active');
-    pinNodes[j].setAttribute('aria-pressed', 'false');
-  }
-};
-
-// Назначение атрибутов элементам на карте
-for (var i = 0; i < pinNodes.length; i++) {
-  var element = pinNodes[i];
-  element.setAttribute('role', 'button');
-  element.setAttribute('tabindex', '1');
-  if (element.classList.contains('pin--active')) {
-    element.setAttribute('aria-pressed', 'true');
-  } else {
-    element.setAttribute('aria-pressed', 'false');
-  }
-}
-
 // Валидация форм
 var noticeFormNode = document.querySelector('.notice__form');
 var noticeFormTitle = noticeFormNode.querySelector('#title');
@@ -80,43 +21,20 @@ noticeFormAddress.required = true;
 // Синхронизация по времени
 var timeSelect = document.querySelector('#time');
 var timeoutSelect = document.querySelector('#timeout');
-
-timeoutSelect.value = timeSelect.value;
-timeSelect.addEventListener('change', function () {
-  timeoutSelect.value = timeSelect.value;
-});
-
-timeoutSelect.addEventListener('change', function () {
-  timeSelect.value = timeoutSelect.value;
-});
-
-// Тип жилья и синхронизация с минимальной ценной
-var housingType = document.querySelector('#type');
-
-housingType.addEventListener('change', function (event) {
-  if (housingType.value === 'flat') {
-    noticeFormPrice.value = 1000;
-    noticeFormPrice.min = 1000;
-  } else if (housingType.value === 'shack') {
-    noticeFormPrice.value = 0;
-    noticeFormPrice.min = 0;
-  } else {
-    noticeFormPrice.value = 1000000;
-    noticeFormPrice.min = 10000;
-  }
-});
+var timeArray = ['twelve', 'thirteen', 'fourteen'];
 
 // Синхронизация по количетсву метс для гостей
 var countRoom = document.querySelector('#room_number');
 var capacityGuest = document.querySelector('#capacity');
+var guestArray = ['noguest', '3guest', '3guest'];
+var roomCountArray = ['1room', '2room', '100room'];
 
-capacityGuest.value = 'noguest';
-countRoom.addEventListener('change', function (event) {
-  var oneRoom = event.target.value === '1room';
-  event.preventDefault();
-  if (oneRoom) {
-    capacityGuest.value = 'noguest';
-  } else {
-    capacityGuest.value = '3guest';
-  }
-});
+// Синхронизация по минимальной цене
+var housingType = document.querySelector('#type');
+var roomArray = ['flat', 'shack', 'palace'];
+var minPrice = ['1000', '0', '10000'];
+
+
+window.synchronizeFields(timeSelect, timeoutSelect, timeArray, timeArray, 'value');
+window.synchronizeFields(countRoom, capacityGuest, roomCountArray, guestArray, 'value');
+window.synchronizeFields(housingType, noticeFormPrice, roomArray, minPrice, 'min');
