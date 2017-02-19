@@ -34,7 +34,6 @@ var housingType = document.querySelector('#type');
 var roomArray = ['flat', 'shack', 'palace'];
 var minPrice = ['1000', '0', '10000'];
 
-
 window.synchronizeFields(timeSelect, timeoutSelect, timeArray, timeArray, 'value');
 window.synchronizeFields(countRoom, capacityGuest, roomCountArray, guestArray, 'value');
 window.synchronizeFields(housingType, noticeFormPrice, roomArray, minPrice, 'min');
