@@ -8,7 +8,10 @@ window.synchronizeFields = (function () {
 
       if (target === firstElement) {
         indexSelectValue = firstArr.indexOf(firstElement.value);
-        secondElement[propertyName] = secondArr[indexSelectValue];
+        var syncCallback = (function (secondElement, propertyName) {
+          // Что дальше???
+        })();
+        // secondElement[propertyName] = secondArr[indexSelectValue];
       } else {
         indexSelectValue = secondArr.indexOf(target[propertyName]);
         firstElement[propertyName] = firstArr[indexSelectValue];

@@ -3,10 +3,11 @@
 window.initializePins = (function () {
   return function () {
     var pinNodes = document.querySelectorAll('.pin');
-    var closeDialog = document.querySelector('.dialog__close');
     var dialogWindow = document.querySelector('.dialog');
+    var closeDialog = document.querySelector('.dialog__close');
     var tokyoPinMap = document.querySelector('.tokyo__pin-map');
     var CODE_ENTER_KEY = 13;
+    var callBackPin = null;
 
     // Обработчик события по клику
     var clickHandler = function (event) {
@@ -19,7 +20,7 @@ window.initializePins = (function () {
       }
       clickedElement.classList.add('pin--active');
       clickedElement.setAttribute('aria-pressed', 'true');
-      dialogWindow.style.display = 'block';
+      window.showCard();
     };
     tokyoPinMap.addEventListener('click', clickHandler, true);
 
@@ -30,15 +31,23 @@ window.initializePins = (function () {
         var clickedElement = event.target;
         clickedElement.classList.add('pin--active');
         clickedElement.setAttribute('aria-pressed', 'true');
-        dialogWindow.style.display = 'block';
+        window.showCard();
+        callBackPin = function () {
+          clickedElement.focus();
+        };
       }
     };
     tokyoPinMap.addEventListener('keydown', keydownHandler, true);
 
+
     // Скрытие диалогового окна и удаление класса у метки
-    closeDialog.addEventListener('click', function () {
+    closeDialog.addEventListener('click', function (event) {
+      event.preventDefault();
       dialogWindow.style.display = 'none';
       removeClassPinActive();
+      if (typeof callBackPin === 'function') {
+        callBackPin();
+      }
     });
 
     // функция удаления активного класса у обьектов с классом pin
